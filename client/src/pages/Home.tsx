@@ -97,8 +97,9 @@ export default function Home() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-500 dark:from-emerald-900 dark:via-emerald-800 dark:to-teal-900" />
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }} />
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-28 lg:py-36">
-          <div className="max-w-2xl">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-20 lg:py-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div>
             <div className="flex flex-wrap gap-2 mb-6">
               <Badge variant="secondary" className="bg-white/20 text-white border-white/20 backdrop-blur-sm rounded-full px-3 py-1 text-xs font-medium">
                 <BadgeCheck className="h-3 w-3 mr-1" /> Verified Independent
@@ -125,7 +126,7 @@ export default function Home() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white/30 text-white hover:bg-white/10 rounded-full font-semibold px-8"
+                className="border-2 border-white/50 text-white hover:bg-white/15 hover:border-white/70 rounded-full font-semibold px-8"
                 onClick={() => scrollToSection("how-it-works")}
                 data-testid="button-hero-learn"
               >
@@ -133,11 +134,45 @@ export default function Home() {
               </Button>
             </div>
           </div>
+
+          {/* Hero illustration */}
+          <div className="hidden lg:flex items-center justify-center">
+            <div className="relative">
+              {/* Main illustration circle */}
+              <div className="w-72 h-72 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center">
+                <div className="w-56 h-56 rounded-full bg-white/15 flex items-center justify-center">
+                  <svg viewBox="0 0 200 200" className="w-44 h-44" fill="none">
+                    {/* Paw print */}
+                    <ellipse cx="100" cy="130" rx="30" ry="25" fill="white" opacity="0.9" />
+                    <circle cx="72" cy="95" r="14" fill="white" opacity="0.85" />
+                    <circle cx="128" cy="95" r="14" fill="white" opacity="0.85" />
+                    <circle cx="58" cy="118" r="12" fill="white" opacity="0.8" />
+                    <circle cx="142" cy="118" r="12" fill="white" opacity="0.8" />
+                    {/* Heart accent */}
+                    <path d="M100 72l-2-2C90 62 84 58 78 58c-8 0-14 6-14 14 0 10 10 18 22 28l14 12 14-12c12-10 22-18 22-28 0-8-6-14-14-14-6 0-12 4-20 12l-2 2z" fill="white" opacity="0.6" />
+                    {/* Stethoscope hint */}
+                    <path d="M95 42 Q95 32 105 32 Q115 32 115 42" stroke="white" strokeWidth="3" opacity="0.5" fill="none" />
+                    <circle cx="105" cy="45" r="3" fill="white" opacity="0.5" />
+                  </svg>
+                </div>
+              </div>
+              {/* Floating accent badges */}
+              <div className="absolute -top-2 -right-2 bg-white/20 backdrop-blur-sm rounded-2xl px-3 py-2 flex items-center gap-2">
+                <Star className="h-4 w-4 text-yellow-300 fill-yellow-300" />
+                <span className="text-white text-xs font-semibold">4.9 Rating</span>
+              </div>
+              <div className="absolute -bottom-2 -left-4 bg-white/20 backdrop-blur-sm rounded-2xl px-3 py-2 flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-white" />
+                <span className="text-white text-xs font-semibold">500+ Visits</span>
+              </div>
+            </div>
+          </div>
+          </div>
         </div>
       </section>
 
       {/* ─── How It Works ─── */}
-      <section id="how-it-works" className="py-16 sm:py-24 bg-background">
+      <section id="how-it-works" className="py-12 sm:py-16 bg-background">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
             <Badge variant="secondary" className="rounded-full px-3 py-1 text-xs font-medium mb-4">How It Works</Badge>
