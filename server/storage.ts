@@ -11,8 +11,10 @@ import { drizzle } from "drizzle-orm/better-sqlite3";
 import Database from "better-sqlite3";
 import { eq } from "drizzle-orm";
 
-const sqlite = new Database("data.db");
-sqlite.pragma("journal_mode = WAL");
+// Use in-memory DB for serverless (Vercel), file-based for local dev
+const isServerless = process.env.VERCEL === '1';
+const sqlite = new Database(isServerless ? ':memory:' : 'data.db');
+if (!isServerless) sqlite.pragma('journal_mode = WAL');
 
 export const db = drizzle(sqlite);
 
