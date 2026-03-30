@@ -6,6 +6,7 @@ import {
   BadgeCheck, CreditCard, CheckCircle2, AlertTriangle,
   MessageCircle, MapPin, Phone, Star, Sun, Moon, Menu, X, PawPrint
 } from "lucide-react";
+import mascotImg from "@assets/mascot.jpeg";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
@@ -135,26 +136,15 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Hero illustration */}
+          {/* Hero — Mascot Photo */}
           <div className="hidden lg:flex items-center justify-center">
             <div className="relative">
-              {/* Main illustration circle */}
-              <div className="w-72 h-72 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center">
-                <div className="w-56 h-56 rounded-full bg-white/15 flex items-center justify-center">
-                  <svg viewBox="0 0 200 200" className="w-44 h-44" fill="none">
-                    {/* Paw print */}
-                    <ellipse cx="100" cy="130" rx="30" ry="25" fill="white" opacity="0.9" />
-                    <circle cx="72" cy="95" r="14" fill="white" opacity="0.85" />
-                    <circle cx="128" cy="95" r="14" fill="white" opacity="0.85" />
-                    <circle cx="58" cy="118" r="12" fill="white" opacity="0.8" />
-                    <circle cx="142" cy="118" r="12" fill="white" opacity="0.8" />
-                    {/* Heart accent */}
-                    <path d="M100 72l-2-2C90 62 84 58 78 58c-8 0-14 6-14 14 0 10 10 18 22 28l14 12 14-12c12-10 22-18 22-28 0-8-6-14-14-14-6 0-12 4-20 12l-2 2z" fill="white" opacity="0.6" />
-                    {/* Stethoscope hint */}
-                    <path d="M95 42 Q95 32 105 32 Q115 32 115 42" stroke="white" strokeWidth="3" opacity="0.5" fill="none" />
-                    <circle cx="105" cy="45" r="3" fill="white" opacity="0.5" />
-                  </svg>
-                </div>
+              <div className="w-72 h-72 rounded-full bg-white/10 backdrop-blur-sm p-3">
+                <img
+                  src={mascotImg}
+                  alt="ZealaPet mascot — golden retriever"
+                  className="w-full h-full rounded-full object-cover object-[center_25%] ring-4 ring-white/30 shadow-2xl"
+                />
               </div>
               {/* Floating accent badges */}
               <div className="absolute -top-2 -right-2 bg-white/20 backdrop-blur-sm rounded-2xl px-3 py-2 flex items-center gap-2">
@@ -309,7 +299,7 @@ export default function Home() {
               <div className="space-y-2">
                 <button onClick={() => scrollToSection("trust")} className="block text-xs text-muted-foreground hover:text-foreground transition-colors">Trust Center</button>
                 <button onClick={() => scrollToSection("how-it-works")} className="block text-xs text-muted-foreground hover:text-foreground transition-colors">How It Works</button>
-                <p className="text-xs text-muted-foreground">saltypaws.dog</p>
+                <p className="text-xs text-muted-foreground">zealapet.vercel.app</p>
               </div>
             </div>
           </div>

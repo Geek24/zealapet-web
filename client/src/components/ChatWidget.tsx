@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, ImagePlus, Loader2, CheckCircle2, AlertTriangle, PawPrint } from "lucide-react";
+import { X, Send, ImagePlus, Loader2, CheckCircle2, AlertTriangle } from "lucide-react";
+import mascotImg from "@assets/mascot.jpeg";
 import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/lib/queryClient";
 import ReactMarkdown from "react-markdown";
@@ -119,11 +120,11 @@ export default function ChatWidget() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-xl hover:shadow-2xl flex items-center justify-center transition-shadow"
+            className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-xl hover:shadow-2xl ring-3 ring-primary overflow-hidden transition-shadow"
             data-testid="button-open-chat"
             aria-label="Open ZealaAI chat"
           >
-            <MessageCircle className="h-6 w-6" />
+            <img src={mascotImg} alt="ZealaAI" className="w-full h-full rounded-full object-cover object-[center_25%]" />
           </motion.button>
         )}
       </AnimatePresence>
@@ -141,8 +142,8 @@ export default function ChatWidget() {
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 bg-primary text-primary-foreground shrink-0">
-              <div className="flex items-center gap-2">
-                <PawPrint className="h-5 w-5" />
+              <div className="flex items-center gap-2.5">
+                <img src={mascotImg} alt="ZealaAI" className="h-8 w-8 rounded-full object-cover object-[center_25%] ring-1 ring-white/30" />
                 <div>
                   <h3 className="font-semibold text-sm leading-tight">ZealaAI</h3>
                   <p className="text-xs opacity-80">Pre-Visit Triage Assistant</p>
@@ -180,12 +181,10 @@ export default function ChatWidget() {
             <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
               {messages.length === 0 && (
                 <div className="text-center py-8">
-                  <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-3">
-                    <PawPrint className="h-6 w-6" />
-                  </div>
-                  <h4 className="font-semibold text-sm mb-1">Welcome to ZealaAI</h4>
+                  <img src={mascotImg} alt="ZealaAI mascot" className="w-20 h-20 rounded-full object-cover object-[center_25%] ring-3 ring-primary/20 mx-auto mb-3" />
+                  <h4 className="font-semibold text-sm mb-1">Hi, I'm ZealaAI</h4>
                   <p className="text-xs text-muted-foreground leading-relaxed max-w-[250px] mx-auto">
-                    I'll help prepare your animal doc with a Pre-Visit Brief. Tell me about your pet!
+                    I'll help prepare your animal doc with a Pre-Visit Brief before they arrive. Tell me about your pet!
                   </p>
                 </div>
               )}
