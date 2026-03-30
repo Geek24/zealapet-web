@@ -193,7 +193,7 @@ export default async function handler(req, res) {
       return json(res, 200, { data: taxi, disclaimer: DISCLAIMER });
     }
 
-    // AI Chat
+    // AI Chat (Gemini)
     if (url === '/api/chat' && method === 'POST') {
       const body = await parseBody(req);
       const { messages } = body;
@@ -205,43 +205,61 @@ export default async function handler(req, res) {
         return json(res, 200, { response: "I'm sorry, but I cannot assist with prescription or pharmacy requests. ZealaPet is a logistics and scheduling platform only. Please consult your veterinary professional directly for medication needs.\n\n*" + DISCLAIMER + "*" });
       }
 
-      const apiKey = process.env.ANTHROPIC_API_KEY;
+      const apiKey = process.env.GEMINI_API_KEY;
       if (!apiKey) {
         return json(res, 200, { response: "Hi there! I'm ZealaAI, your pre-visit triage assistant. I help prepare a brief for your vet before your visit. The AI service is currently being configured. Please check back soon!\n\n*" + DISCLAIMER + "*" });
       }
 
       try {
-        const apiMessages = messages.map((msg, i) => {
-          if (i === messages.length - 1 && body.imageBase64 && body.mimeType) {
-            return { role: msg.role, content: [
-              { type: "image", source: { type: "base64", media_type: body.mimeType, data: body.imageBase64 } },
-              { type: "text", text: msg.content || "Please look at this image of my pet." },
-            ]};
+        // Build Gemini conversation history
+        // Gemini uses "user" and "model" roles; map our "assistant" -> "model"
+        const geminiContents = [
+          { role: "user", parts: [{ text: "System instructions: " + TRIAGE_SYSTEM_PROMPT }] },
+          { role: "model", parts: [{ text: "Understood. I am ZealaAI, the compassionate pre-visit triage assistant for ZealaPet. I'm ready to help pet parents prepare for their vet visits. How can I help you today?" }] },
+        ];
+
+        for (const msg of messages) {
+          const role = msg.role === 'assistant' ? 'model' : 'user';
+          const parts = [];
+
+          // Handle image attachments on the last message
+          if (msg === lastMsg && body.imageBase64 && body.mimeType) {
+            parts.push({ inlineData: { mimeType: body.mimeType, data: body.imageBase64 } });
           }
-          return { role: msg.role, content: msg.content };
-        });
-        // Direct fetch to Anthropic API (no SDK needed)
-        const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': apiKey,
-            'anthropic-version': '2023-06-01',
-          },
-          body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 1024,
-            system: TRIAGE_SYSTEM_PROMPT,
-            messages: apiMessages,
-          }),
-        });
-        const anthropicData = await anthropicRes.json();
-        if (!anthropicRes.ok) {
-          console.error('Anthropic API error:', anthropicData);
+          parts.push({ text: msg.content || "Please look at this image of my pet." });
+          geminiContents.push({ role, parts });
+        }
+
+        const geminiRes = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: geminiContents,
+              safetySettings: [
+                { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_ONLY_HIGH" },
+                { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_ONLY_HIGH" },
+                { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_ONLY_HIGH" },
+                { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_ONLY_HIGH" },
+              ],
+              generationConfig: {
+                maxOutputTokens: 1024,
+                temperature: 0.7,
+              },
+            }),
+          }
+        );
+
+        const geminiData = await geminiRes.json();
+        if (!geminiRes.ok) {
+          console.error('Gemini API error:', JSON.stringify(geminiData));
           return json(res, 200, { response: "I'm having trouble connecting right now. Please try again in a moment.\n\n*" + DISCLAIMER + "*" });
         }
-        const textContent = anthropicData.content && anthropicData.content.find(c => c.type === 'text');
-        return json(res, 200, { response: textContent ? textContent.text : "I couldn't process that. Could you try again?" });
+
+        const candidate = geminiData.candidates && geminiData.candidates[0];
+        const textPart = candidate && candidate.content && candidate.content.parts && candidate.content.parts.find(p => p.text);
+        return json(res, 200, { response: textPart ? textPart.text : "I couldn't process that. Could you try again?" });
       } catch (chatErr) {
         console.error("Chat API error:", chatErr);
         return json(res, 200, { response: "I'm having trouble connecting to my AI service right now. Please try again in a moment.\n\n*" + DISCLAIMER + "*" });
