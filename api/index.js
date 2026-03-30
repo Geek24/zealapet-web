@@ -1,7 +1,7 @@
 // Vercel Serverless Function — ZealaPet API
 // Pure Node.js handler, no Express dependency
 
-const { createHash } = require('crypto');
+import { createHash } from 'crypto';
 
 // ─── In-memory data store (re-initialized on cold start) ───
 const data = {
@@ -95,7 +95,7 @@ function json(res, statusCode, data) {
   res.end(JSON.stringify(data));
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   // CORS preflight
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Origin', '*');
