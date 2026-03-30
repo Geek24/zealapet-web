@@ -211,8 +211,6 @@ module.exports = async function handler(req, res) {
       }
 
       try {
-        const Anthropic = require('@anthropic-ai/sdk');
-        const client = new Anthropic({ apiKey });
         const apiMessages = messages.map((msg, i) => {
           if (i === messages.length - 1 && body.imageBase64 && body.mimeType) {
             return { role: msg.role, content: [
@@ -222,11 +220,27 @@ module.exports = async function handler(req, res) {
           }
           return { role: msg.role, content: msg.content };
         });
-        const response = await client.messages.create({
-          model: "claude-sonnet-4-20250514", max_tokens: 1024,
-          system: TRIAGE_SYSTEM_PROMPT, messages: apiMessages,
+        // Direct fetch to Anthropic API (no SDK needed)
+        const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': apiKey,
+            'anthropic-version': '2023-06-01',
+          },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 1024,
+            system: TRIAGE_SYSTEM_PROMPT,
+            messages: apiMessages,
+          }),
         });
-        const textContent = response.content.find(c => c.type === "text");
+        const anthropicData = await anthropicRes.json();
+        if (!anthropicRes.ok) {
+          console.error('Anthropic API error:', anthropicData);
+          return json(res, 200, { response: "I'm having trouble connecting right now. Please try again in a moment.\n\n*" + DISCLAIMER + "*" });
+        }
+        const textContent = anthropicData.content && anthropicData.content.find(c => c.type === 'text');
         return json(res, 200, { response: textContent ? textContent.text : "I couldn't process that. Could you try again?" });
       } catch (chatErr) {
         console.error("Chat API error:", chatErr);
