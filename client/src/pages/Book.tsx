@@ -292,6 +292,7 @@ export default function Book() {
                     <span>Platform fee (15%)</span>
                     <span>${(platformFeeCents / 100).toFixed(2)}</span>
                   </div>
+                  <p className="text-xs text-emerald-600 dark:text-emerald-400">Emergency visits: platform fee waived</p>
                   <div className="border-t border-border pt-2 mt-2 flex justify-between font-bold">
                     <span>Total (held in escrow)</span>
                     <span className="text-primary">${(totalCents / 100).toFixed(2)}</span>

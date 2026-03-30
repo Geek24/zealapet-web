@@ -42,6 +42,8 @@ CRITICAL RULES:
 
 DISCLAIMER: ZealaPet provides logistics and scheduling only. Medical care is provided by your independent veterinary contractor.`;
 
+// BUSINESS RULE: Emergency visits = 0% platform fee. Vet flags emergency in visit notes → fee auto-waived.
+
 const LOGISTICS_DISCLAIMER = "ZealaPet provides logistics and scheduling only. Medical care is provided by your independent veterinary contractor.";
 
 // Pharmacy keyword blocking

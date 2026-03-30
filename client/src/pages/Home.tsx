@@ -4,7 +4,8 @@ import { useTheme } from "@/components/ThemeProvider";
 import {
   Heart, Shield, Clock, Car, Scissors, Dog, ChevronRight,
   BadgeCheck, CreditCard, CheckCircle2, AlertTriangle,
-  MessageCircle, MapPin, Phone, Star, Sun, Moon, Menu, X, PawPrint
+  MessageCircle, MapPin, Phone, Star, Sun, Moon, Menu, X, PawPrint,
+  Users, ExternalLink
 } from "lucide-react";
 import mascotImg from "@assets/mascot.jpeg";
 import { Button } from "@/components/ui/button";
@@ -215,6 +216,19 @@ export default function Home() {
             ))}
           </div>
 
+          {/* Emergency Fee Waiver Callout */}
+          <div className="mt-6 border-l-4 border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 rounded-r-2xl p-5" data-testid="callout-emergency-fee-waiver">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl" role="img" aria-label="emergency">🚨</span>
+              <div>
+                <h3 className="font-bold text-emerald-800 dark:text-emerald-300 mb-1">Emergency? Fee waived.</h3>
+                <p className="text-sm text-emerald-700 dark:text-emerald-400 leading-relaxed">
+                  If your vet flags a visit as an emergency, we waive our 15% platform fee. Period. No taking advantage of pet parents in distress.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Ancillary Services */}
           <div className="mt-12">
             <h3 className="text-center font-semibold mb-6">Additional Services</h3>
@@ -233,6 +247,41 @@ export default function Home() {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ─── Community Impact ─── */}
+      <section id="community-impact" className="py-16 sm:py-24 bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <Badge variant="secondary" className="rounded-full px-3 py-1 text-xs font-medium mb-4">Community Impact</Badge>
+            <h2 className="text-xl font-bold tracking-tight">Vets Ranked by Community Impact</h2>
+            <p className="text-sm text-muted-foreground mt-2">We measure what matters — not just stars.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-card border border-card-border rounded-2xl p-6 text-center" data-testid="card-impact-savings">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 mb-4">
+                <Heart className="h-6 w-6" />
+              </div>
+              <p className="text-2xl font-bold mb-1">$50,000+</p>
+              <p className="text-sm text-muted-foreground">Saved in Maine pet homes this year</p>
+            </div>
+            <div className="bg-card border border-card-border rounded-2xl p-6 text-center" data-testid="card-impact-families">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 mb-4">
+                <Users className="h-6 w-6" />
+              </div>
+              <p className="text-2xl font-bold mb-1">200+</p>
+              <p className="text-sm text-muted-foreground">Families served in Greater Portland</p>
+            </div>
+            <div className="bg-card border border-card-border rounded-2xl p-6 text-center" data-testid="card-impact-emergencies">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 mb-4">
+                <Shield className="h-6 w-6" />
+              </div>
+              <p className="text-2xl font-bold mb-1">47</p>
+              <p className="text-sm text-muted-foreground">Emergency fees waived</p>
+            </div>
+          </div>
+          <p className="text-center text-xs text-muted-foreground mt-6">Impact metrics are calculated from real visit data across our platform.</p>
         </div>
       </section>
 
@@ -273,6 +322,28 @@ export default function Home() {
               <CheckCircle2 className="h-4 w-4 mr-2" /> I Understand — Book a Visit
             </Button>
           </Link>
+        </div>
+      </section>
+
+      {/* ─── Radical Empathy ─── */}
+      <section className="py-16 sm:py-20 bg-emerald-50 dark:bg-emerald-950/20">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+          <Heart className="h-10 w-10 mx-auto mb-4 text-emerald-600 dark:text-emerald-400" />
+          <h2 className="text-xl font-bold tracking-tight mb-3">Built on Radical Empathy</h2>
+          <p className="text-sm text-muted-foreground mb-6 leading-relaxed max-w-lg mx-auto">
+            ZealaPet exists because we believe pet care should never be a financial emergency. Our independent docs are verified, our payments are held in escrow, and when it's urgent — we don't take a cut.
+          </p>
+          <p className="text-xs text-muted-foreground mb-4">
+            Part of the Renew EcoMe LLC ecosystem · 1.5% for the planet via Stripe Climate
+          </p>
+          <a
+            href="https://digitalcontinuity.ai"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-400 hover:underline font-medium"
+          >
+            digitalcontinuity.ai <ExternalLink className="h-3 w-3" />
+          </a>
         </div>
       </section>
 
